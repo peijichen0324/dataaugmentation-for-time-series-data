@@ -39,32 +39,3 @@ class MixUp(object):
                 return mixed_inputs, mixed_labels
             else:
                 return inputs, labels
-
-
-# Example usage
-# if __name__ == '__main__':
-#     data = np.random.normal(loc=1, scale=1, size=(4, 500, 6))
-#     label = np.array([
-#         [0, 0, 0, 1],
-#         [1, 0, 0, 0],
-#         [0, 1, 0, 0],
-#         [0, 0, 1, 0]
-#     ])
-
-#     batch = (data, label)
-#     gn = MixUp(p=1.0, alpha=0.2)
-#     aug_data_batch = gn(batch)
-
-#     raw_fig = plt.figure(figsize=(5, 5))
-#     data = data[0]
-#     for plt_index in range(1, 7):
-#         ax = raw_fig.add_subplot(3, 2, plt_index)
-#         ax.plot(list(range(500)), data[:, plt_index-1])
-
-#     aug_fig = plt.figure(figsize=(5, 5))
-#     aug_data_1 = aug_data_batch[0][0]
-
-#     for plt_index in range(1, 7):
-#         ax = aug_fig.add_subplot(3, 2, plt_index)
-#         ax.plot(list(range(500)), aug_data_1[:, plt_index-1], color='r')
-#     plt.show()
