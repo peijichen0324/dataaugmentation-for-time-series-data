@@ -1,5 +1,7 @@
 import numpy as np
-from src.tool import generate_seed
+import hashlib
+import time
+
 
 class GaussianNoise(object):
     """Jittering the input time-series data randomly with a given probability.
@@ -23,11 +25,19 @@ class GaussianNoise(object):
             return np.random.choice(param)
         else:
             raise ValueError("Parameter must be an int, float, tuple of length 2, or list.")
-
+    
+    @staticmethod
+    def generate_seed():
+        current_time = str(time.time() * 1000)
+        hash_object = hashlib.md5(current_time.encode())
+        hash_integer = int(hash_object.hexdigest(), 16)
+        random_integer = hash_integer % 100
+        return random_integer
+    
     def __call__(self, signal):
         """signal: [sequence_length, input_dim]"""
         if np.random.uniform(0, 1) < self.p:
-            seed = generate_seed()
+            seed = self.generate_seed()
             signal_ = np.array(signal).copy()
             np.random.seed(seed)
             sequence_length = signal_.shape[0]
@@ -43,10 +53,3 @@ class GaussianNoise(object):
                 signal_[:, i] = signal_[:, i] + noise
             return signal_
         return signal
-
-
-if __name__ == '__main__':
-    gn = GaussianNoise(p=1.0, SNR=(20, 30))
-    data = np.random.random(size=(400, 1))
-    for i in range(100):
-        gn(data)
