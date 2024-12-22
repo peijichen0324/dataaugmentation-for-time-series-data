@@ -1,5 +1,6 @@
 import numpy as np
-from src.tool import generate_seed
+import hashlib
+import time
 
 
 class LocalJittering(object):
@@ -29,13 +30,21 @@ class LocalJittering(object):
             return np.random.choice(param)
         else:
             raise ValueError("Parameter must be an int, float, tuple of length 2, or list.")
+        
+    @staticmethod
+    def generate_seed():
+        current_time = str(time.time() * 1000)
+        hash_object = hashlib.md5(current_time.encode())
+        hash_integer = int(hash_object.hexdigest(), 16)
+        random_integer = hash_integer % 100
+        return random_integer
 
     def __call__(self, signal):
         """signal: [sequence_length, input_dim]
            signal = signal + α * high_frequency_noise
         """
         if np.random.uniform(0, 1) < self.p:
-            seed = generate_seed()
+            seed = self.generate_seed()
             signal_ = np.array(signal).copy()
             np.random.seed(seed)
             sequence_length, input_dim = signal_.shape[0], signal_.shape[1]
