@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Permutation(object):
     """Permutate the input time-series data randomly with a given probability.
 
