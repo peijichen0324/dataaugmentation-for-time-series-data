@@ -1,5 +1,6 @@
 import numpy as np
-from src.tool import generate_seed
+import hashlib
+import time
 
 
 class Distortion(object):
@@ -55,6 +56,14 @@ class Distortion(object):
         # Perform inverse Fourier transform to move back to time domain
         signal_phase_distorted = np.fft.ifft(signal_fft, axis=0).real
         return signal_phase_distorted
+    
+    @staticmethod
+    def generate_seed():
+        current_time = str(time.time() * 1000)
+        hash_object = hashlib.md5(current_time.encode())
+        hash_integer = int(hash_object.hexdigest(), 16)
+        random_integer = hash_integer % 100
+        return random_integer
 
     def __call__(self, signal):
         """Apply nonlinear distortion to the signal.
@@ -66,7 +75,7 @@ class Distortion(object):
             Distorted signal with nonlinear transformations.
         """
         if np.random.uniform(0, 1) < self.p:
-            seed = generate_seed()
+            seed = self.generate_seed()
             np.random.seed(seed)
             signal_ = np.array(signal).copy()
             distortion_type = self._select_value(self.distortion_type)
