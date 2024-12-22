@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 class CutMix(object):
     """Apply CutMix augmentation to a batch of time-series data.
@@ -55,40 +54,3 @@ class CutMix(object):
 
                 return x_mix, y_mix
         return x, y
-
-
-# # Example usage
-# if __name__ == '__main__':
-#     # Example data: batch of 4 sequences, each of length 500 with 6 channels
-#     data = np.random.normal(loc=1, scale=1, size=(4, 500, 6))
-#     label = np.array([
-#         [0, 0, 0, 1],
-#         [1, 0, 0, 0],
-#         [0, 1, 0, 0],
-#         [0, 0, 1, 0]
-#     ])
-
-#     # Initialize CutMix with p=1.0 to always apply CutMix
-#     cutmix = CutMix(alpha=0.5, p=1.0)
-#     # Simulate a batch of data
-#     batch = (data, label)
-#     # Apply CutMix augmentation
-#     x_mix, y_mix = cutmix(batch)
-
-#     # Plot the original data
-#     raw_fig = plt.figure(figsize=(5, 5))
-#     original_data = data[1]  # Using the second sequence in the batch
-#     for plt_index in range(1, 7):
-#         ax = raw_fig.add_subplot(3, 2, plt_index)
-#         ax.plot(list(range(500)), original_data[:, plt_index - 1])
-#     plt.suptitle("Original Data")
-
-#     # Plot the augmented data
-#     aug_fig = plt.figure(figsize=(5, 5))
-#     aug_data_1 = x_mix[1]  # Using the second sequence in the batch after augmentation
-#     for plt_index in range(1, 7):
-#         ax = aug_fig.add_subplot(3, 2, plt_index)
-#         ax.plot(list(range(500)), aug_data_1[:, plt_index - 1], color='r')
-#     plt.suptitle("Augmented Data (CutMix)")
-
-#     plt.show()
